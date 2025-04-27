@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - FinanceTracker{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="text-center">Welcome to Your Dashboard, {{ user.username }}!</h1>
+    <p class="lead">Here, you can view your financial insights, track expenses, and more.</p>
+
+    <!-- Example of dashboard features -->
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Total Expenses</h5>
+                    <p class="card-text">Total amount spent this month: $500</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Upcoming Bills</h5>
+                    <p class="card-text">Electricity bill: $120 due on 30th April.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

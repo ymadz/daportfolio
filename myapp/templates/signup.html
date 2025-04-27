@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}Sign Up - FinanceTracker{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h3 class="card-title text-center mb-4">Create an Account</h3>
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <div class="d-grid mt-3">
+                            <button type="submit" name="signup" class="btn btn-primary">Sign Up</button>
+                        </div>
+                    </form>
+
+                    <p class="mt-4 text-center">
+                        Already have an account? 
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Login here</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Login Modal -->
+<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form method="post" action="{% url 'signup' %}">
+        {% csrf_token %}
+        <div class="modal-header">
+          <h5 class="modal-title" id="loginModalLabel">Login</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          {% if form_login.errors %}
+            <div class="alert alert-danger">
+                Please correct the error(s) below.
+            </div>
+          {% endif %}
+          {{ form_login.as_p }}
+        </div>
+        <div class="modal-footer">
+          <button type="submit" name="login" class="btn btn-success">Login</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

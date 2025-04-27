@@ -1,0 +1,100 @@
+<!-- tracker/templates/tracker/dashboard.html -->
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - FinanceTracker{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h3>Financial Overview</h3>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Total Income</h5>
+                    <p class="card-text">$ {{ total_income }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Total Expenses</h5>
+                    <p class="card-text">$ {{ total_expenses }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Balance</h5>
+                    <p class="card-text">$ {{ balance }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if not budget %}
+        <div class="alert alert-warning mt-4">
+            You haven't set up a budget yet. <a href="{% url 'manage_budget' %}">Create a Budget</a>
+        </div>
+    {% else %}
+        <div class="mt-4">
+            <h4>Your Budget</h4>
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <p><strong>Monthly Income:</strong> ${{ budget.monthly_income }}</p>
+                    <p><strong>Expense Limit:</strong> ${{ budget.monthly_expense_limit }}</p>
+
+                    <!-- Spent and Remaining Budget with progress bar -->
+                    <div class="d-flex justify-content-between">
+                        <p><strong>Spent:</strong> ${{ spent }}</p>
+                        <p><strong>Remaining Budget:</strong> ${{ remaining_budget }}</p>
+                    </div>
+
+                    <!-- Progress bar for remaining budget -->
+                    <div class="progress mt-3">
+                        <div class="progress-bar" role="progressbar" style="width: {{ progress }}%;" aria-valuenow="{{ progress }}" aria-valuemin="0" aria-valuemax="100">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    <!-- Buttons for actions -->
+    <div class="mt-4">
+        <a href="{% url 'create_transaction' %}" class="btn btn-success mr-2">Add Transaction</a>
+        <a href="{% url 'transaction_list' %}" class="btn btn-info mr-2">View Transaction History</a>
+        <a href="{% url 'manage_budget' %}" class="btn btn-warning">Manage Budget</a>
+    </div>
+
+    <!-- Recent Transactions Section -->
+    <div class="mt-5">
+        <h4>Recent Transactions</h4>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Amount</th>
+                        <th>Type</th>
+                        <th>Category</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for transaction in recent_transactions %}
+                        <tr>
+                            <td>{{ transaction.date }}</td>
+                            <td>${{ transaction.amount }}</td>
+                            <td>{{ transaction.transaction_type|title }}</td>
+                            <td>{{ transaction.category.name }}</td>
+                            <td>{{ transaction.description }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

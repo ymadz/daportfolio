@@ -1,0 +1,71 @@
+<!-- tracker/templates/tracker/transaction_list.html -->
+{% extends 'base.html' %}
+
+{% block title %}Transaction List{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h3>Recent Transactions</h3>
+
+    <!-- Filter by Category -->
+    <form method="GET" class="mb-3">
+        <div class="form-group">
+            <label for="category">Filter by Category</label>
+            <select name="category" class="form-control" id="category">
+                <option value="">All Categories</option>
+                {% for category in categories %}
+                    <option value="{{ category.id }}" {% if request.GET.category == category.id|stringformat:"s" %}selected{% endif %}>{{ category.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Filter</button>
+    </form>
+
+    <!-- Transaction Table -->
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Category</th>
+                <th>Amount</th>
+                <th>Description</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for transaction in page_obj %}
+            <tr>
+                <td>{{ transaction.date }}</td>
+                <td>{{ transaction.category.name }}</td>
+                <td>{{ transaction.amount }}</td>
+                <td>{{ transaction.description }}</td>
+                <td>
+                    <a href="{% url 'delete_transaction' transaction.pk %}" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5">No transactions found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Pagination -->
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+            {% endif %}
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+</div>
+{% endblock %}
