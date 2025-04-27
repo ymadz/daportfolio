@@ -20,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-loys=t=kxgzb=r&&_h4azhjrx^f+n9g#-q#49epxglt&2nlli-'
+SECRET_KEY = 'django-insecure--t%si!^6^0jkjkrgv=%!6+5xbe^6blc+bx0i8y%f+*g%0h09c='
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'myapp',
+    'tracker'
 ]
 
 MIDDLEWARE = [
@@ -76,11 +76,11 @@ WSGI_APPLICATION = 'myproject.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'personal_finance_db',    # your database name
-        'USER': 'root',         # your MySQL username
-        'PASSWORD': '', # your MySQL password
-        'HOST': 'localhost',               # or your server IP if remote
-        'PORT': '3306',                    # default MySQL port
+        'USER': 'root',
+        'PASSWORD': '',
+        'HOST': 'localhost',
+        'PORT': '3306',
+        'NAME': 'personal_finance_db',
     }
 }
 

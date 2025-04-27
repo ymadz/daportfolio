@@ -1,0 +1,13 @@
+<!-- tracker/templates/tracker/analytics.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Analytics</h2>
+    {% if no_data %}
+        <p>No transactions available for analytics.</p>
+    {% else %}
+        <img src="data:image/png;base64,{{ graph }}" alt="Income vs Expenses Graph" class="img-fluid">
+    {% endif %}
+</div>
+{% endblock %}
