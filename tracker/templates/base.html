@@ -75,7 +75,7 @@
 <body>
     <nav class="navbar navbar-expand-lg">
         <div class="container">
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="{% url 'dashboard' %}">
                 <i class="la la-chart-line"></i>
                 Finance Tracker
             </a>
@@ -84,27 +84,27 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="{% url 'dashboard' %}">
+                    <li class="nav-item {% if request.path == '/' %}active{% endif %}">
+                        <a class="nav-link" href="{% url 'dashboard' %}">
                             <i class="la la-home"></i> Dashboard
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item {% if request.path == '/add_transaction/' %}active{% endif %}">
                         <a class="nav-link" href="{% url 'add_transaction' %}">
                             <i class="la la-plus-circle"></i> Add Transaction
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item {% if request.path == '/set_budget/' %}active{% endif %}">
                         <a class="nav-link" href="{% url 'set_budget' %}">
                             <i class="la la-wallet"></i> Set Budget
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item {% if request.path == '/analytics/' %}active{% endif %}">
                         <a class="nav-link" href="{% url 'analytics' %}">
                             <i class="la la-chart-bar"></i> Analytics
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item {% if request.path == '/transaction_list/' %}active{% endif %}">
                         <a class="nav-link" href="{% url 'transaction_list' %}">
                             <i class="la la-list"></i> Transaction List
                         </a>
@@ -112,7 +112,7 @@
                 </ul>
             </div>
         </div>
-    </nav>
+    </nav>    
 
     <div class="container mt-4">
         {% block content %}
