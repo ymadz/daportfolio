@@ -104,6 +104,11 @@
                             <i class="la la-chart-bar"></i> Analytics
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'transaction_list' %}">
+                            <i class="la la-list"></i> Transaction List
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -117,5 +122,18 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        // Ensuring dismiss function works
+        document.addEventListener("DOMContentLoaded", function() {
+            var alertCloseButton = document.querySelector('.btn-close');
+            if (alertCloseButton) {
+                alertCloseButton.addEventListener('click', function () {
+                    var alert = alertCloseButton.closest('.alert');
+                    alert.classList.add('fade');
+                    alert.classList.remove('show');
+                });
+            }
+        });
+    </script>    
 </body>
 </html>

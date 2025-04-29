@@ -6,45 +6,54 @@
 
     <!-- Row for stats -->
     <div class="row">
+        <!-- Total Expenses -->
         <div class="col-md-4">
             <div class="card shadow-sm mb-4">
                 <div class="card-body">
                     <h5 class="card-title">Total Expenses</h5>
                     <p class="card-text text-danger h4">${{ expenses }}</p>
-                    <div class="progress">
+                    <div class="progress mb-2">
                         <div class="progress-bar bg-danger" role="progressbar" style="width: {{ expenses_percentage }}%" aria-valuenow="{{ expenses_percentage }}" aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
-                    <small class="text-muted">Your total expenses this month.</small>
+                    <small class="text-muted">{{ expenses_percentage }}% of your income spent</small>
                 </div>
             </div>
         </div>
-
+    
+        <!-- Total Income -->
         <div class="col-md-4">
             <div class="card shadow-sm mb-4">
                 <div class="card-body">
-                    <h5 class="card-title">Total Income</h5>
-                    <p class="card-text text-success h4">${{ income }}</p>
-                    <div class="progress">
-                        <div class="progress-bar bg-success" role="progressbar" style="width: {{ income_percentage }}%" aria-valuenow="{{ income_percentage }}" aria-valuemin="0" aria-valuemax="100"></div>
+                    <h5 class="card-title">Income Remaining</h5>
+                    <p class="card-text text-success h4">${{ income|floatformat:2 }}</p>
+                    <div class="progress mb-2">
+                        <div class="progress-bar bg-success" role="progressbar" style="width: {{ income_left_percentage }}%" aria-valuenow="{{ income_left_percentage }}" aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
-                    <small class="text-muted">Your total income this month.</small>
+                    <small class="text-muted">{{ income_left_percentage }}% income left after expenses</small>
                 </div>
             </div>
         </div>
-
+    
+        <!-- Monthly Budget -->
         <div class="col-md-4">
             <div class="card shadow-sm mb-4">
                 <div class="card-body">
-                    <h5 class="card-title">Budget Used</h5>
-                    <p class="card-text h4">{{ budget_used }}%</p>
-                    <div class="progress">
-                        <div class="progress-bar bg-warning" role="progressbar" style="width: {{ budget_used }}%" aria-valuenow="{{ budget_used }}" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                    <small class="text-muted">Percentage of your budget used this month.</small>
+                    <h5 class="card-title">Monthly Budget</h5>
+                    {% if budget %}
+                        <p class="card-text h4">${{ budget_total }}</p>
+                        <div class="progress mb-2">
+                            <div class="progress-bar bg-warning" role="progressbar" style="width: {{ budget_used }}%" aria-valuenow="{{ budget_used }}" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        <small class="text-muted">{{ budget_used }}% used - Remaining: ${{ budget_remaining|floatformat:2 }}</small>
+                    {% else %}
+                        <p class="text-muted">No budget set.</p>
+                        <a href="{% url 'set_budget' %}" class="btn btn-sm btn-primary mt-2">Set Budget</a>
+                    {% endif %}
                 </div>
             </div>
         </div>
     </div>
+    
 
     <!-- Transactions Table -->
     <h3 class="my-4">Recent Transactions</h3>

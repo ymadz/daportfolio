@@ -4,10 +4,56 @@
 {% block content %}
 <div class="container mt-4">
     <h2>Analytics</h2>
+    
     {% if no_data %}
         <p>No transactions available for analytics.</p>
     {% else %}
-        <img src="data:image/png;base64,{{ graph }}" alt="Income vs Expenses Graph" class="img-fluid">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5>Income vs Expenses Over Time</h5>
+            </div>
+            <div class="card-body">
+                <img src="data:image/png;base64,{{ income_expenses_graph }}" alt="Income vs Expenses Graph" class="img-fluid">
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5>Monthly Income vs Expenses</h5>
+            </div>
+            <div class="card-body">
+                <img src="data:image/png;base64,{{ monthly_graph }}" alt="Monthly Income vs Expenses" class="img-fluid">
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5>Expense Breakdown by Category</h5>
+            </div>
+            <div class="card-body">
+                <img src="data:image/png;base64,{{ category_graph }}" alt="Expense Breakdown by Category" class="img-fluid">
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h5>Budget Overview</h5>
+            </div>
+            <div class="card-body">
+                {% if budget_total %}
+                    <p><strong>Budget: </strong>${{ budget_total }}</p>
+                    <p><strong>Budget Used: </strong>${{ budget_used }} ({{ budget_used }}%)</p>
+                    <p><strong>Budget Remaining: </strong>${{ budget_remaining }} ({{ budget_remaining_percentage }}%)</p>
+                    
+                    <!-- Progress Bar -->
+                    <div class="progress mb-3">
+                        <div class="progress-bar bg-success" role="progressbar" style="width: {{ budget_remaining_percentage }}%" aria-valuenow="{{ budget_remaining_percentage }}" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                {% else %}
+                    <p>No budget set for the current month.</p>
+                {% endif %}
+            </div>
+        </div>
     {% endif %}
 </div>
 {% endblock %}
