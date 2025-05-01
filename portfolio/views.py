@@ -3,6 +3,12 @@ import numpy as np
 import pandas as pd
 import os
 from django.conf import settings
+import seaborn as sns
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+
+
 
 def portfolio_home(request):
     mini_projects = [
@@ -86,3 +92,42 @@ def demographic_analyzer(request):
         'result': result,
         'error': error
     })
+
+def medical_visualizer(request):
+    df = pd.read_csv(os.path.join(settings.BASE_DIR, 'portfolio', 'static', 'data', 'medical_examination.csv'))
+
+    # Add 'overweight' column
+    df['overweight'] = (df['weight'] / ((df['height'] / 100) ** 2) > 25).astype(int)
+
+    # Normalize data
+    df['cholesterol'] = (df['cholesterol'] > 1).astype(int)
+    df['gluc'] = (df['gluc'] > 1).astype(int)
+
+    # Categorical Plot
+    df_cat = pd.melt(df, id_vars=['cardio'], 
+                     value_vars=['cholesterol', 'gluc', 'smoke', 'alco', 'active', 'overweight'])
+    df_cat = df_cat.groupby(['cardio', 'variable', 'value']).size().reset_index(name='total')
+
+    catplot = sns.catplot(x='variable', y='total', hue='value', col='cardio', data=df_cat, kind='bar').fig
+    catplot_path = os.path.join(settings.BASE_DIR, 'portfolio', 'static', 'data', 'catplot.png')
+    catplot.savefig(catplot_path)
+    plt.close()
+
+    # Heat Map
+    df_heat = df[
+        (df['ap_lo'] <= df['ap_hi']) &
+        (df['height'] >= df['height'].quantile(0.025)) &
+        (df['height'] <= df['height'].quantile(0.975)) &
+        (df['weight'] >= df['weight'].quantile(0.025)) &
+        (df['weight'] <= df['weight'].quantile(0.975))
+    ]
+    corr = df_heat.corr()
+    mask = np.triu(np.ones_like(corr, dtype=bool))
+    fig, ax = plt.subplots(figsize=(12, 10))
+    sns.heatmap(corr, mask=mask, annot=True, fmt=".1f", center=0, square=True, linewidths=.5, cbar_kws={"shrink": .45}, ax=ax)
+
+    heatmap_path = os.path.join(settings.BASE_DIR, 'portfolio', 'static', 'data', 'heatmap.png')
+    fig.savefig(heatmap_path)
+    plt.close()
+
+    return render(request, 'mini_projects/medical_visualizer.html')
