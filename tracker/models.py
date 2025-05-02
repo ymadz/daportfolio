@@ -5,8 +5,6 @@ from datetime import date
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
-    # We'll assume the category is global and doesn't require a user relationship
-    # (as user authentication is removed)
 
     def __str__(self):
         return self.name

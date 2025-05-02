@@ -1,0 +1,21 @@
+category,amount,date,description,type
+Salary,3200.0,2025-01-01,January Salary,income
+Groceries,150.75,2025-01-03,Walmart groceries,expense
+Rent,1200.0,2025-01-05,January rent,expense
+Entertainment,50.0,2025-01-07,Netflix subscription,expense
+Freelance,600.0,2025-01-10,Web development project,income
+Utilities,180.6,2025-01-15,Electricity and water bill,expense
+Transportation,60.0,2025-01-18,Gas refill,expense
+Miscellaneous,35.0,2025-01-20,Stationery and gifts,expense
+Groceries,130.25,2025-01-24,Weekly grocery,expense
+Entertainment,75.0,2025-01-28,Movie and dinner,expense
+Salary,3200.0,2025-02-01,February Salary,income
+Groceries,145.3,2025-02-03,Supermarket grocery,expense
+Rent,1200.0,2025-02-05,February rent,expense
+Freelance,450.0,2025-02-07,Logo design for client,income
+Entertainment,60.0,2025-02-10,Concert ticket,expense
+Utilities,172.9,2025-02-14,Monthly utilities,expense
+Transportation,58.0,2025-02-16,Uber rides,expense
+Miscellaneous,40.0,2025-02-20,Books and supplies,expense
+Groceries,128.4,2025-02-22,Weekly grocery,expense
+Entertainment,90.0,2025-02-27,Gaming subscription,expense
