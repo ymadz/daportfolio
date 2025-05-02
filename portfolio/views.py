@@ -160,6 +160,7 @@ def time_series_visualizer(request):
     # Show preview
     csv_preview = df.head(10).to_html(classes='table table-striped', index=True)
 
+
     if request.method == 'POST':
         # Line Plot
         fig, ax = plt.subplots(figsize=(15, 5))
