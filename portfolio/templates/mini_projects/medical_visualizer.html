@@ -10,7 +10,21 @@
 <div class="container py-5">
     <h1 class="text-center mb-4">Medical Data Visualizer</h1>
 
-    <div class="row">
+    <!-- CSV Table Preview -->
+    <h5>Preview of CSV Data:</h5>
+    <div class="table-responsive">
+        {{ csv_data|safe }}
+    </div>
+
+    <!-- Analyze Button -->
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary mt-3">Analyze</button>
+    </form>
+
+    <!-- Show Plots If Analyzed -->
+    {% if analyzed %}
+    <div class="row mt-5">
         <div class="col-md-6">
             <div class="card shadow">
                 <div class="card-header text-center fw-bold">Categorical Plot</div>
@@ -28,6 +42,7 @@
             </div>
         </div>
     </div>
+    {% endif %}
 </div>
 </body>
 </html>
