@@ -6,6 +6,13 @@
     <title>Time Series Visualizer</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
+<style>
+    body {
+        background: linear-gradient(to right, #ffebeb, #ffffff);
+        font-family: "Segoe UI", sans-serif;
+        color: #333;
+      }
+</style>
 <body>
 <div class="container py-5">
     <h1 class="text-center mb-4">Page View Time Series Visualizer</h1>
@@ -18,7 +25,7 @@
     <form method="POST">
         {% csrf_token %}
         <div class="d-grid gap-2 col-6 mx-auto mb-5">
-            <button class="btn btn-primary btn-lg" type="submit">Generate Visualizations</button>
+            <button class="btn btn-danger btn-lg" type="submit">Generate Visualizations</button>
         </div>
     </form>
 

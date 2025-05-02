@@ -7,6 +7,8 @@ import seaborn as sns
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
+from scipy.stats import linregress
+
 
 
 
@@ -211,6 +213,50 @@ def time_series_visualizer(request):
         })
 
     return render(request, 'mini_projects/time_series_visualizer.html', {
+        'csv_data': csv_preview,
+        'analyzed': False
+    })
+
+def sea_level_predictor(request):
+    file_path = os.path.join(settings.STATICFILES_DIRS[0], 'data', 'epa-sea-level.csv')
+    df = pd.read_csv(file_path)
+
+    # Preview table
+    csv_preview = df.head(10).to_html(classes='table table-striped', index=False)
+
+    if request.method == 'POST':
+        # Plot setup
+        plt.figure(figsize=(12, 6))
+        plt.scatter(df['Year'], df['CSIRO Adjusted Sea Level'], label='Original Data', alpha=0.7)
+
+        # Full data regression (1880–2050)
+        res1 = linregress(df['Year'], df['CSIRO Adjusted Sea Level'])
+        x_pred1 = pd.Series(range(1880, 2051))
+        y_pred1 = res1.slope * x_pred1 + res1.intercept
+        plt.plot(x_pred1, y_pred1, 'r', label='Best Fit Line (1880–2050)')
+
+        # Recent data regression (2000–2050)
+        df_recent = df[df['Year'] >= 2000]
+        res2 = linregress(df_recent['Year'], df_recent['CSIRO Adjusted Sea Level'])
+        x_pred2 = pd.Series(range(2000, 2051))
+        y_pred2 = res2.slope * x_pred2 + res2.intercept
+        plt.plot(x_pred2, y_pred2, 'g', label='Best Fit Line (2000–2050)')
+
+        plt.xlabel('Year')
+        plt.ylabel('Sea Level (inches)')
+        plt.title('Rise in Sea Level')
+        plt.legend()
+
+        save_path = os.path.join(settings.STATICFILES_DIRS[0], 'data', 'sea_level_plot.png')
+        plt.savefig(save_path)
+        plt.close()
+
+        return render(request, 'mini_projects/sea_level_predictor.html', {
+            'csv_data': csv_preview,
+            'analyzed': True
+        })
+
+    return render(request, 'mini_projects/sea_level_predictor.html', {
         'csv_data': csv_preview,
         'analyzed': False
     })
