@@ -15,7 +15,7 @@ def portfolio_home(request):
         {"name": "Mean-Variance-Standard Deviation Calculator", "description": "Performs statistical analysis on datasets.", "url": "/mean_variance_calculator/"},
         {"name": "Demographic Data Analyzer", "description": "Analyzes and visualizes demographic data.", "url": "/demographic-analyzer/"},
         {"name": "Medical Data Visualizer", "description": "Creates insightful charts from patient medical data.", "url": "/medical-visualizer/"},
-        {"name": "Page View Time Series Visualizer", "description": "Visualizes website traffic over time.", "url": "/pageview-visualizer/"},
+        {"name": "Page View Time Series Visualizer", "description": "Visualizes website traffic over time.", "url": "/time-series-visualizer/"},
         {"name": "Sea Level Predictor", "description": "Predicts future sea levels using historical data.", "url": "/sea-level-predictor/"},
     ]
     return render(request, 'portfolio.html', {"mini_projects": mini_projects})
@@ -143,6 +143,73 @@ def medical_visualizer(request):
         })
 
     return render(request, 'mini_projects/medical_visualizer.html', {
+        'csv_data': csv_preview,
+        'analyzed': False
+    })
+    
+
+def time_series_visualizer(request):
+    # Load and clean data
+    file_path = os.path.join(settings.STATICFILES_DIRS[0], 'data', 'fcc-forum-pageviews.csv')
+    df = pd.read_csv(file_path, parse_dates=['date'], index_col='date')
+
+    low = df['value'].quantile(0.025)
+    high = df['value'].quantile(0.975)
+    df = df[(df['value'] >= low) & (df['value'] <= high)]
+
+    # Show preview
+    csv_preview = df.head(10).to_html(classes='table table-striped', index=True)
+
+    if request.method == 'POST':
+        # Line Plot
+        fig, ax = plt.subplots(figsize=(15, 5))
+        ax.plot(df.index, df['value'], color='red', linewidth=1)
+        ax.set_title('Daily freeCodeCamp Forum Page Views from: 5/2016-12/2019')
+        ax.set_xlabel('Date')
+        ax.set_ylabel('Page Views')
+        fig.savefig(os.path.join(settings.STATICFILES_DIRS[0], 'data', 'line_plot.png'))
+        plt.close(fig)
+
+        # Bar Plot
+        df_bar = df.copy()
+        df_bar['year'] = df_bar.index.year
+        df_bar['month'] = df_bar.index.month_name()
+        df_grouped = df_bar.groupby(['year', 'month'])['value'].mean().unstack()
+        month_order = ['January', 'February', 'March', 'April', 'May', 'June',
+                       'July', 'August', 'September', 'October', 'November', 'December']
+        df_grouped = df_grouped[month_order]
+        fig = df_grouped.plot(kind='bar', figsize=(12, 8)).figure
+        plt.xlabel('Years')
+        plt.ylabel('Average Page Views')
+        plt.legend(title='Months')
+        fig.savefig(os.path.join(settings.STATICFILES_DIRS[0], 'data', 'bar_plot.png'))
+        plt.close(fig)
+
+        # Box Plot
+        df_box = df.copy()
+        df_box.reset_index(inplace=True)
+        df_box['year'] = df_box['date'].dt.year
+        df_box['month'] = df_box['date'].dt.strftime('%b')
+        df_box['month_num'] = df_box['date'].dt.month
+        df_box = df_box.sort_values('month_num')
+        fig, axes = plt.subplots(1, 2, figsize=(15, 6))
+        sns.boxplot(x='year', y='value', data=df_box, ax=axes[0])
+        axes[0].set_title('Year-wise Box Plot (Trend)')
+        axes[0].set_xlabel('Year')
+        axes[0].set_ylabel('Page Views')
+        sns.boxplot(x='month', y='value', data=df_box, ax=axes[1])
+        axes[1].set_title('Month-wise Box Plot (Seasonality)')
+        axes[1].set_xlabel('Month')
+        axes[1].set_ylabel('Page Views')
+        fig.savefig(os.path.join(settings.STATICFILES_DIRS[0], 'data', 'box_plot.png'))
+        plt.close(fig)
+
+        return render(request, 'mini_projects/time_series_visualizer.html', {
+            'csv_data': csv_preview,
+            'analyzed': True
+        })
+
+    return render(request, 'mini_projects/time_series_visualizer.html', {
         'csv_data': csv_preview,
         'analyzed': False
     })
