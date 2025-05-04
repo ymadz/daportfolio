@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure--t%si!^6^0jkjkrgv=%!6+5xbe^6blc+bx0i8y%f+*g%0h09c=
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['madz.pythonanywhere.com']
+ALLOWED_HOSTS = ['madz.pythonanywhere.com', '127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -78,10 +78,11 @@ WSGI_APPLICATION = 'myproject.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'USER': 'madz',
-        'PASSWORD': 'ahmadadmin',
-        'HOST': 'madz.mysql.pythonanywhere-services.com',
-        'NAME': 'madz$default',
+        'USER': 'root',
+        'PASSWORD': '',
+        'HOST': 'localhost',
+        'PORT': '3306',
+        'NAME': 'personal_finance_db',
     }
 }
 
