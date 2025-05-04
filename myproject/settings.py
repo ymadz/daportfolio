@@ -78,11 +78,10 @@ WSGI_APPLICATION = 'myproject.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'USER': 'root',
-        'PASSWORD': '',
-        'HOST': 'localhost',
-        'PORT': '3306',
-        'NAME': 'personal_finance_db',
+        'USER': 'madz',
+        'PASSWORD': 'ahmadadmin',
+        'HOST': 'madz.mysql.pythonanywhere-services.com',
+        'NAME': 'madz$default',
     }
 }
 
