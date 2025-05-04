@@ -225,17 +225,14 @@ def sea_level_predictor(request):
     csv_preview = df.head(10).to_html(classes='table table-striped', index=False)
 
     if request.method == 'POST':
-        # Plot setup
         plt.figure(figsize=(12, 6))
         plt.scatter(df['Year'], df['CSIRO Adjusted Sea Level'], label='Original Data', alpha=0.7)
 
-        # Full data regression (1880–2050)
         res1 = linregress(df['Year'], df['CSIRO Adjusted Sea Level'])
         x_pred1 = pd.Series(range(1880, 2051))
         y_pred1 = res1.slope * x_pred1 + res1.intercept
         plt.plot(x_pred1, y_pred1, 'r', label='Best Fit Line (1880–2050)')
 
-        # Recent data regression (2000–2050)
         df_recent = df[df['Year'] >= 2000]
         res2 = linregress(df_recent['Year'], df_recent['CSIRO Adjusted Sea Level'])
         x_pred2 = pd.Series(range(2000, 2051))
@@ -247,9 +244,14 @@ def sea_level_predictor(request):
         plt.title('Rise in Sea Level')
         plt.legend()
 
-        save_path = os.path.join(settings.STATICFILES_DIRS[0], 'data', 'sea_level_plot.png')
+        # Ensure the save directory exists
+        save_dir = os.path.join(settings.MEDIA_ROOT)
+        os.makedirs(save_dir, exist_ok=True)
+
+        save_path = os.path.join(save_dir, 'sea_level_plot.png')
         plt.savefig(save_path)
         plt.close()
+
 
         return render(request, 'mini_projects/sea_level_predictor.html', {
             'csv_data': csv_preview,
@@ -258,5 +260,6 @@ def sea_level_predictor(request):
 
     return render(request, 'mini_projects/sea_level_predictor.html', {
         'csv_data': csv_preview,
-        'analyzed': False
+        'analyzed': False,
+        'plot_url': settings.MEDIA_URL + 'sea_level_plot.png'
     })
