@@ -1,5 +1,7 @@
 from django.urls import path
 from . import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('', views.portfolio_home, name='portfolio_home'),
@@ -9,3 +11,6 @@ urlpatterns = [
     path('time-series-visualizer/', views.time_series_visualizer, name='time_series_visualizer'),
     path('sea-level-predictor/', views.sea_level_predictor, name='sea_level_predictor'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

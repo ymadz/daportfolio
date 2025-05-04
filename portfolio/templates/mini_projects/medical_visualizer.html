@@ -1,55 +1,76 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>Medical Data Visualizer</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<style>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <style>
     body {
-        background: linear-gradient(to right, #ffebeb, #ffffff);
-        font-family: "Segoe UI", sans-serif;
-        color: #333;
-      }
-</style>
-<body>
-<div class="container py-5">
-    <h1 class="text-center mb-4">Medical Data Visualizer</h1>
+      background: linear-gradient(to right, #ffebeb, #ffffff);
+      font-family: "Segoe UI", sans-serif;
+      color: #333;
+    }
+  </style>
+  <body>
+    <div class="container py-5">
+      <h1 class="text-center mb-4">Medical Data Visualizer</h1>
 
-    <!-- CSV Table Preview -->
-    <h5>Preview of CSV Data:</h5>
-    <div class="table-responsive">
-        {{ csv_data|safe }}
-    </div>
+      <!-- CSV Table Preview -->
+      <h5>Preview of CSV Data:</h5>
+      <div class="table-responsive">{{ csv_data|safe }}</div>
 
-    <!-- Analyze Button -->
-    <form method="post">
+      <!-- Analyze Button -->
+      <form method="post">
         {% csrf_token %}
         <button type="submit" class="btn btn-danger mt-3">Analyze</button>
-    </form>
+      </form>
 
-    <!-- Show Plots If Analyzed -->
-    {% if analyzed %}
-    <div class="row mt-5">
+      <!-- Show Plots If Analyzed -->
+      {% if analyzed %}
+      <div class="row mt-5">
         <div class="col-md-6">
-            <div class="card shadow">
-                <div class="card-header text-center fw-bold">Categorical Plot</div>
-                <div class="card-body text-center">
-                    <img src="{% static 'data/catplot.png' %}" class="img-fluid" alt="Categorical Plot">
-                </div>
+          <div class="card shadow">
+            <div class="card-header text-center fw-bold">Categorical Plot</div>
+            <div class="card-body text-center">
+              <img
+                src="{% static 'data/catplot.png' %}"
+                class="img-fluid"
+                alt="Categorical Plot"
+              />
+              <img
+                src="/media/catplot.png"
+                class="img-fluid"
+                alt="Sea Level Plot"
+              />
             </div>
+          </div>
         </div>
         <div class="col-md-6 mt-4 mt-md-0">
-            <div class="card shadow">
-                <div class="card-header text-center fw-bold">Correlation Heatmap</div>
-                <div class="card-body text-center">
-                    <img src="{% static 'data/heatmap.png' %}" class="img-fluid" alt="Heatmap">
-                </div>
+          <div class="card shadow">
+            <div class="card-header text-center fw-bold">
+              Correlation Heatmap
             </div>
+            <div class="card-body text-center">
+              <img
+                src="{% static 'data/heatmap.png' %}"
+                class="img-fluid"
+                alt="Heatmap"
+              />
+              <img
+                src="/media/heatmap.png"
+                class="img-fluid"
+                alt="Sea Level Plot"
+              />
+            </div>
+          </div>
         </div>
+      </div>
+      {% endif %}
     </div>
-    {% endif %}
-</div>
-</body>
+  </body>
 </html>

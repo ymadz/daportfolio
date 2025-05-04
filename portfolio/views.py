@@ -120,7 +120,9 @@ def medical_visualizer(request):
 
         cat_plot = sns.catplot(x='variable', y='total', hue='value',
                                col='cardio', data=df_cat, kind='bar')
-        catplot_path = os.path.join(settings.STATICFILES_DIRS[0], 'data', 'catplot.png')
+        # catplot_path = os.path.join(settings.STATICFILES_DIRS[0], 'data', 'catplot.png')
+        # cat_plot.savefig(catplot_path)
+        catplot_path = os.path.join(settings.MEDIA_ROOT, 'catplot.png')
         cat_plot.savefig(catplot_path)
 
         # Draw heatmap
@@ -141,7 +143,9 @@ def medical_visualizer(request):
         fig.savefig(heatmap_path)
         return render(request, 'mini_projects/medical_visualizer.html', {
             'csv_data': csv_preview,
-            'analyzed': True
+            'analyzed': True,
+            'catplot_url': settings.MEDIA_URL + 'catplot.png',
+            'heatmap_url': settings.MEDIA_URL + 'heatmap.png',
         })
 
     return render(request, 'mini_projects/medical_visualizer.html', {
@@ -170,7 +174,7 @@ def time_series_visualizer(request):
         ax.set_title('Daily freeCodeCamp Forum Page Views from: 5/2016-12/2019')
         ax.set_xlabel('Date')
         ax.set_ylabel('Page Views')
-        fig.savefig(os.path.join(settings.STATICFILES_DIRS[0], 'data', 'line_plot.png'))
+        fig.savefig(os.path.join(settings.MEDIA_ROOT, 'line_plot.png'))
         plt.close(fig)
 
         # Bar Plot
@@ -181,7 +185,7 @@ def time_series_visualizer(request):
         month_order = ['January', 'February', 'March', 'April', 'May', 'June',
                        'July', 'August', 'September', 'October', 'November', 'December']
         df_grouped = df_grouped[month_order]
-        fig = df_grouped.plot(kind='bar', figsize=(12, 8)).figure
+        fig.savefig(os.path.join(settings.MEDIA_ROOT, 'bar_plot.png'))
         plt.xlabel('Years')
         plt.ylabel('Average Page Views')
         plt.legend(title='Months')
@@ -204,12 +208,15 @@ def time_series_visualizer(request):
         axes[1].set_title('Month-wise Box Plot (Seasonality)')
         axes[1].set_xlabel('Month')
         axes[1].set_ylabel('Page Views')
-        fig.savefig(os.path.join(settings.STATICFILES_DIRS[0], 'data', 'box_plot.png'))
+        fig.savefig(os.path.join(settings.MEDIA_ROOT, 'box_plot.png'))
         plt.close(fig)
 
         return render(request, 'mini_projects/time_series_visualizer.html', {
             'csv_data': csv_preview,
-            'analyzed': True
+            'analyzed': True,
+            'line_plot_url': settings.MEDIA_URL + 'line_plot.png',
+            'bar_plot_url': settings.MEDIA_URL + 'bar_plot.png',
+            'box_plot_url': settings.MEDIA_URL + 'box_plot.png'
         })
 
     return render(request, 'mini_projects/time_series_visualizer.html', {
@@ -252,11 +259,6 @@ def sea_level_predictor(request):
         plt.savefig(save_path)
         plt.close()
 
-
-        return render(request, 'mini_projects/sea_level_predictor.html', {
-            'csv_data': csv_preview,
-            'analyzed': True
-        })
 
     return render(request, 'mini_projects/sea_level_predictor.html', {
         'csv_data': csv_preview,
